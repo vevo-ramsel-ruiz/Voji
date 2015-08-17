@@ -51,6 +51,8 @@ NSString * const kParseKeyVojiISRC = @"isrc";
     // Query
     PFQuery* query = [PFQuery queryWithClassName:parseClassName];
     [query whereKey:kParseKeyVojiISRC equalTo:isrc];
+    [query orderByAscending:kParseKeyVojiTime];
+    
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         
         if (objects) {

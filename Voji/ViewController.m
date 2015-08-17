@@ -42,7 +42,7 @@
     [self setupMotionManager];
     
     
-    [self loadAndPlayVideo:@"GB1101400818"];
+    [self loadAndPlayVideo:@"USCJY1531563"];
 }
 
 - (void)didReceiveMemoryWarning {
