@@ -28,6 +28,8 @@
 		7EDACC401B828733003090E7 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EDACC3F1B828733003090E7 /* libsqlite3.dylib */; };
 		7EDACC421B828738003090E7 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EDACC411B828738003090E7 /* Accounts.framework */; };
 		7EDACC441B82873D003090E7 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EDACC431B82873D003090E7 /* Social.framework */; };
+		7EDACC491B8298E5003090E7 /* VMApiFacade+Parse.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EDACC481B8298E5003090E7 /* VMApiFacade+Parse.m */; };
+		7EDACC4C1B82992E003090E7 /* VMVoji.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EDACC4B1B82992E003090E7 /* VMVoji.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,6 +72,11 @@
 		7EDACC3F1B828733003090E7 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		7EDACC411B828738003090E7 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
 		7EDACC431B82873D003090E7 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
+		7EDACC471B8298E5003090E7 /* VMApiFacade+Parse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VMApiFacade+Parse.h"; sourceTree = "<group>"; };
+		7EDACC481B8298E5003090E7 /* VMApiFacade+Parse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VMApiFacade+Parse.m"; sourceTree = "<group>"; };
+		7EDACC4A1B82992E003090E7 /* VMVoji.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMVoji.h; sourceTree = "<group>"; };
+		7EDACC4B1B82992E003090E7 /* VMVoji.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMVoji.m; sourceTree = "<group>"; };
+		7EDACC4D1B8299AC003090E7 /* Voji.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Voji.pch; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -146,6 +153,8 @@
 		7EDACC031B828652003090E7 /* Voji */ = {
 			isa = PBXGroup;
 			children = (
+				7EDACC461B8298AE003090E7 /* Service */,
+				7EDACC451B8298A2003090E7 /* Data */,
 				7EDACC081B828652003090E7 /* AppDelegate.h */,
 				7EDACC091B828652003090E7 /* AppDelegate.m */,
 				7EDACC0E1B828652003090E7 /* ViewController.h */,
@@ -164,6 +173,7 @@
 			children = (
 				7EDACC051B828652003090E7 /* Info.plist */,
 				7EDACC061B828652003090E7 /* main.m */,
+				7EDACC4D1B8299AC003090E7 /* Voji.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -183,6 +193,24 @@
 				7EDACC221B828652003090E7 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		7EDACC451B8298A2003090E7 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				7EDACC4A1B82992E003090E7 /* VMVoji.h */,
+				7EDACC4B1B82992E003090E7 /* VMVoji.m */,
+			);
+			name = Data;
+			sourceTree = "<group>";
+		};
+		7EDACC461B8298AE003090E7 /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				7EDACC471B8298E5003090E7 /* VMApiFacade+Parse.h */,
+				7EDACC481B8298E5003090E7 /* VMApiFacade+Parse.m */,
+			);
+			name = Service;
 			sourceTree = "<group>";
 		};
 		F386700768AF622B57C55E9A /* Pods */ = {
@@ -329,7 +357,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7EDACC4C1B82992E003090E7 /* VMVoji.m in Sources */,
 				7EDACC0D1B828652003090E7 /* Voji.xcdatamodeld in Sources */,
+				7EDACC491B8298E5003090E7 /* VMApiFacade+Parse.m in Sources */,
 				7EDACC0A1B828652003090E7 /* AppDelegate.m in Sources */,
 				7EDACC101B828652003090E7 /* ViewController.m in Sources */,
 				7EDACC071B828652003090E7 /* main.m in Sources */,
@@ -461,6 +491,8 @@
 			baseConfigurationReference = 0CFF24DD6B6D39BCFE572DF4 /* Pods-Voji.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = Voji/Voji.pch;
 				INFOPLIST_FILE = Voji/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -472,6 +504,8 @@
 			baseConfigurationReference = 09D2C46B735C876F454093F2 /* Pods-Voji.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = Voji/Voji.pch;
 				INFOPLIST_FILE = Voji/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";

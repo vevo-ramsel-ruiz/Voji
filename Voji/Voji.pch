@@ -11,5 +11,6 @@
 
 #import <VevoSDK_Internal/VevoSDK.h>
 #import <Parse/Parse.h>
+#import "VMApiFacade+Parse.h"
 
 #endif

@@ -16,6 +16,11 @@
 
 @interface ViewController () <VMMoviePlayerControllerDelegate>
 
+// Data
+@property (nonatomic) VMVideo           *video;
+@property (nonatomic) NSArray           *vojis;
+
+// Views
 @property (nonatomic) UIView            *playerBaseView;
 @property (nonatomic) UIImageView       *thumbnailView;
 @property (nonatomic) CMMotionManager   *motionManager;
@@ -25,6 +30,7 @@
 
 @implementation ViewController
 
+#pragma mark - Lifecycle
 - (void)viewDidLoad {
     [super viewDidLoad];
 
@@ -54,6 +60,19 @@
     
     
     
+    [self setupMotionManager];
+   
+    
+    [self loadAndPlayVideo:@"GB1101400818"];
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - Setup
+- (void)setupMotionManager {
     
     self.motionManager = [CMMotionManager new];
     
@@ -125,25 +144,23 @@
         //
         //                                                    [self moveAround:accel];
         //                                                });
-        //                                                
+        //
         //                                            }];
         //
         //        [self.motionManager startMagnetometerUpdatesToQueue:[NSOperationQueue new]
         //                                                withHandler:^(CMMagnetometerData *magnetometerData, NSError *error) {
         //                                                    //NSLog(@"manetic data: %@", magnetometerData);
-        //                                                    
+        //
         //                                                    dispatch_async(dispatch_get_main_queue(), ^{
-        //                                                        
+        //
         //                                                        [self moveAround:accel];
         //                                                    });
         //                                                }];
-        //        
+        //
         //        [self.motionManager startGyroUpdatesToQueue:[NSOperationQueue new] withHandler:^(CMGyroData *gyroData, NSError *error){
         //            NSLog(@"gyroscope data: %@", gyroData);
         //        }];
     }
-    
-    [self loadAndPlayVideos:@"GB1101400818"];
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -156,7 +173,7 @@
     return UIInterfaceOrientationMaskPortrait;
 }
 
-
+#pragma mark - User Actions
 - (void)onDoubleTapped:(UITapGestureRecognizer *)recognizer
 {
     if (recognizer.state == UIGestureRecognizerStateRecognized) {
@@ -167,6 +184,65 @@
 }
 
 
+#pragma mark - Data
+
+- (void)loadAndPlayVideo:(NSString *)isrc
+{
+    
+    dispatch_group_t dispatchGroup = dispatch_group_create();
+    
+    dispatch_group_enter(dispatchGroup);
+    [[VMApiFacade sharedInstance] getVideoWithIsrc:isrc completion:^(BOOL success, VMVideo *video, VMError *error){
+        if (success) {
+            
+            self.video = video;
+            
+            dispatch_group_leave(dispatchGroup);
+            
+        }
+    }];
+    
+    
+    dispatch_group_enter(dispatchGroup);
+    [[VMApiFacade sharedInstance] getVojis:isrc completion:^(BOOL success, NSArray *vojis, VMError *error) {
+        
+        if (success) {
+            
+            self.vojis = vojis;
+            
+            dispatch_group_leave(dispatchGroup);
+        }
+    }];
+    
+    
+    
+    dispatch_group_notify(dispatchGroup, dispatch_get_main_queue(), ^{
+        
+        self.playerBaseView = [[UIView alloc] initWithFrame:self.thumbnailView.frame];
+        
+        // Add tap gesture
+        UISwipeGestureRecognizer *doubleTapGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(onDoubleTapped:)];
+        doubleTapGesture.direction = UISwipeGestureRecognizerDirectionUp;
+        [self.playerBaseView addGestureRecognizer:doubleTapGesture];
+        
+        self.player = [[VMMoviePlayerController alloc] initWithBaseView:self.playerBaseView];
+        self.player.delegate = self;
+        self.player.disableArtistVideos = YES;
+        self.player.controlStyle = VMMovieControlStyleNone;
+        self.player.hideDefaultCloseButton = YES;
+        self.player.hideDefaultVevoLogo = YES;
+        self.player.enableContinuousPlay = YES;
+        [self.player playVideo:self.video];
+    });
+
+    
+    
+  
+}
+
+
+
+#pragma mark - Motion
 - (void)moveAround:(CGFloat)x
 {
     if (self.playerBaseView == nil)
@@ -187,37 +263,8 @@
 }
 
 
-- (void)loadAndPlayVideos:(NSString *)isrc
-{
-    [[VMApiFacade sharedInstance] getVideoWithIsrc:isrc completion:^(BOOL success, VMVideo *video, VMError *error){
-        
-        if (success) {
-            
-            self.playerBaseView = [[UIView alloc] initWithFrame:self.thumbnailView.frame];
-            
-            // Add tap gesture
-            UISwipeGestureRecognizer *doubleTapGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(onDoubleTapped:)];
-            doubleTapGesture.direction = UISwipeGestureRecognizerDirectionUp;
-            [self.playerBaseView addGestureRecognizer:doubleTapGesture];
-            
-            self.player = [[VMMoviePlayerController alloc] initWithBaseView:self.playerBaseView];
-            self.player.delegate = self;
-            self.player.disableArtistVideos = YES;
-            self.player.controlStyle = VMMovieControlStyleNone;
-            self.player.hideDefaultCloseButton = YES;
-            self.player.hideDefaultVevoLogo = YES;
-            self.player.enableContinuousPlay = YES;
-            [self.player playVideo:video];
-        }
-    }];
-}
 
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
+#pragma mark - VMMoviePlayerController Delegate
 
 /**
  Called right before the movie player is about start playing a video.
