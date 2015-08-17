@@ -7,7 +7,22 @@
 //
 
 #import "VMVoji.h"
+#import <Parse/PFObject+Subclass.h>
+
 
 @implementation VMVoji
+
+@dynamic type;
+@dynamic time;
+@dynamic user;
+
+
++ (void)load {
+    [self registerSubclass];
+}
+
++ (NSString *)parseClassName {
+    return @"Voji";
+}
 
 @end

@@ -8,6 +8,18 @@
 
 #import "PFObject.h"
 
-@interface VMVoji : PFObject
+typedef NS_ENUM(NSInteger, VMVojiType)
+{
+    VMVojiTypeThumbsUp = 0,
+    VMVojiTypeThumbsDown,
+};
+
+
+@interface VMVoji : PFObject<PFSubclassing>
++ (NSString *)parseClassName;
+
+@property (nonatomic, strong) NSNumber *type;
+@property (nonatomic, strong) NSNumber *time;
+@property (nonatomic, strong) PFUser *user;
 
 @end

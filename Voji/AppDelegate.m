@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 #import <Parse/Parse.h>
 #import <VevoSDK_Internal/VevoSDK.h>
+#import "VMVoji.h"
 
 #define VEVO_APP_CLIENT_ID_IPHONE       @"7295a757d2a74d2dbb6f691aed3cddbd"//@"FF7901F570F5467DB0B33BF08C045433"
 #define VEVO_APP_CLIENT_SECRET_IPHONE   @"d1e84fc46d3041ac9e35bc8969505de8"//@"0063E641BC7049C0AE46F232AA0636F5"
@@ -69,6 +70,8 @@
     // [Optional] Power your app with Local Datastore. For more info, go to
     // https://parse.com/docs/ios_guide#localdatastore/iOS
     [Parse enableLocalDatastore];
+    
+    [VMVoji registerSubclass];
     
     // Initialize Parse.
     [Parse setApplicationId:@"1mzovWCbpovVblWJJ5W7sPkZkLUJ8zH7wcGfpLYL"
