@@ -8,6 +8,10 @@
 
 #import "AppDelegate.h"
 #import <Parse/Parse.h>
+#import <VevoSDK_Internal/VevoSDK.h>
+
+#define VEVO_APP_CLIENT_ID_IPHONE       @"7295a757d2a74d2dbb6f691aed3cddbd"//@"FF7901F570F5467DB0B33BF08C045433"
+#define VEVO_APP_CLIENT_SECRET_IPHONE   @"d1e84fc46d3041ac9e35bc8969505de8"//@"0063E641BC7049C0AE46F232AA0636F5"
 
 
 @interface AppDelegate ()
@@ -22,14 +26,13 @@
     
     
     // Parse
-    [Parse enableLocalDatastore];
+    [self setupParse:launchOptions];
     
-    // Initialize Parse.
-    [Parse setApplicationId:@"1mzovWCbpovVblWJJ5W7sPkZkLUJ8zH7wcGfpLYL"
-                  clientKey:@"HFMfzu6DROr8gMxWWHeXnTzz0lBExJAWIvfD5EOO"];
     
-    // [Optional] Track statistics around application opens.
-    [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
+    [VevoSDK checkAuthenticationWithClientId:VEVO_APP_CLIENT_ID_IPHONE secret:VEVO_APP_CLIENT_SECRET_IPHONE];
+    
+    [VMSettings defaultSettings].disableFreeFheelAdVideoInTestBuild = YES;
+
     
     
     return YES;
@@ -57,6 +60,23 @@
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     // Saves changes in the application's managed object context before the application terminates.
     [self saveContext];
+}
+
+
+#pragma mark - Parse
+- (void)setupParse:(NSDictionary *)launchOptions {
+    
+    // [Optional] Power your app with Local Datastore. For more info, go to
+    // https://parse.com/docs/ios_guide#localdatastore/iOS
+    [Parse enableLocalDatastore];
+    
+    // Initialize Parse.
+    [Parse setApplicationId:@"1mzovWCbpovVblWJJ5W7sPkZkLUJ8zH7wcGfpLYL"
+                  clientKey:@"HFMfzu6DROr8gMxWWHeXnTzz0lBExJAWIvfD5EOO"];
+    
+    // [Optional] Track statistics around application opens.
+    [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
+    
 }
 
 #pragma mark - Core Data stack
