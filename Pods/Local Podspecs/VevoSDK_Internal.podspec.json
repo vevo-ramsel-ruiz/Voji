@@ -1,0 +1,75 @@
+{
+  "name": "VevoSDK_Internal",
+  "version": "3.2.14",
+  "summary": "This is the VEVO iOS SDK for playing VEVO media",
+  "description": "                    This is the VEVO iOS SDK CocoaPod.\n                    Please see developer.vevo.com for details.\n",
+  "homepage": "http://www.vevo.com",
+  "license": {
+    "type": "Commercial",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "VEVO": "http://www.vevo.com"
+  },
+  "social_media_url": "https://twitter.com/vevo",
+  "source": {
+    "git": "https://github.com/VEVO/iOS_SDK.git",
+    "tag": "3.2.14"
+  },
+  "platforms": {
+    "ios": "7.0"
+  },
+  "libraries": "xml2",
+  "frameworks": [
+    "AdSupport",
+    "EventKit",
+    "AVFoundation",
+    "CoreMedia",
+    "MediaPlayer",
+    "QuartzCore",
+    "CoreLocation",
+    "MessageUI",
+    "Security",
+    "SystemConfiguration",
+    "UIKit",
+    "Foundation",
+    "CoreGraphics",
+    "MediaAccessibility"
+  ],
+  "vendored_frameworks": [
+    "VML/vevo-ios-sdk/3rdParty/AdManager/6.2.0/AdManager.framework",
+    "VML/vevo-ios-sdk/3rdParty/Chromecast/2.7.0/GoogleCast.framework"
+  ],
+  "vendored_libraries": [
+    "VML/vevo-ios-sdk/3rdParty/Comscore/2.1408.01/libcomScore.a",
+    "VML/vevo-ios-sdk/3rdParty/Conviva/2.83/Release-lib/libLivePass3.a",
+    "VML/vevo-ios-sdk/3rdParty/Streamsense/4.1407.08/libStreamSense.a"
+  ],
+  "resources": "VML/vevo-ios-sdk/VevoSDKResources.bundle",
+  "source_files": [
+    "VML/vevo-ios-sdk/vevo-ios-sdk/*.{h,m}",
+    "VML/vevo-ios-sdk/vevo-ios-sdk/internal_classes/*.{h,m}",
+    "VML/vevo-ios-sdk/vevo-ios-sdk/CocoaLumberjack/*.{h,m}",
+    "VML/vevo-ios-sdk/3rdParty/AdManager/6.2.0/AdManager.framework/Headers/*.h",
+    "VML/vevo-ios-sdk/3rdParty/Comscore/2.1408.01/headers/*.h",
+    "VML/vevo-ios-sdk/3rdParty/Conviva/2.83/include/*.h",
+    "VML/vevo-ios-sdk/3rdParty/Streamsense/4.1408.01/headers/*.h"
+  ],
+  "exclude_files": [
+    "VML/vevo-ios-sdk/vevo-ios-sdk/VMLastFMSession.{h,m}",
+    "VML/vevo-ios-sdk/vevo-ios-sdk/VMUserFacade.{h,m}",
+    "VML/vevo-ios-sdk/vevo-ios-sdk/internal_classes/GCKImport.h",
+    "VML/vevo-ios-sdk/vevo-ios-sdk/internal_classes/TestAppDelegate.{h,m}",
+    "VML/vevo-ios-sdk/vevo-ios-sdk/internal_classes/VMAVPlayer.m",
+    "VML/vevo-ios-sdk/vevo-ios-sdk/internal_classes/VMGooglecastManager.{h,m}",
+    "VML/vevo-ios-sdk/vevo-ios-sdk/internal_classes/VMGridView.{h,m}",
+    "VML/vevo-ios-sdk/vevo-ios-sdk/internal_classes/VMGridViewCell.{h,m}",
+    "VML/vevo-ios-sdk/vevo-ios-sdk/internal_classes/VMGridViewDelegate.{h,m}",
+    "VML/vevo-ios-sdk/vevo-ios-sdk/internal_classes/VMLocalEnvironmentManager.{h,m}",
+    "VML/vevo-ios-sdk/vevo-ios-sdk/internal_classes/VMMoviePlayerLoadingView.{h,m}",
+    "VML/vevo-ios-sdk/vevo-ios-sdk/internal_classes/VMPlayerControlView.{h,m}",
+    "VML/vevo-ios-sdk/vevo-ios-sdk/internal_classes/VMVolumeControlView.{h,m}",
+    "VML/vevo-ios-sdk/vevo-ios-sdk/internal_classes/VevoMoviePlayerViewController.{h,m}",
+    "VML/vevo-ios-sdk/vevo-ios-sdk/internal_classes/VMMoviePlayerControlView.{h,m}"
+  ]
+}

@@ -1,0 +1,1 @@
+../../../Apptimize/apptimize-ios-2.9.4/Apptimize.framework/Versions/A/Headers/Apptimize+Compatibility.h

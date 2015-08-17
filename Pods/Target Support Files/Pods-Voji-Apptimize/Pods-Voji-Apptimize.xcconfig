@@ -1,0 +1,2 @@
+PODS_VOJI_APPTIMIZE_FRAMEWORK_SEARCH_PATHS = "$(PODS_ROOT)/Apptimize/apptimize-ios-2.9.4" "$(PODS_ROOT)/Apptimize/apptimize-ios-2.9.4"
+PODS_VOJI_APPTIMIZE_OTHER_LDFLAGS = -ObjC -framework "Apptimize" -framework "CFNetwork" -framework "CoreGraphics" -framework "Foundation" -framework "Security" -framework "UIKit"
