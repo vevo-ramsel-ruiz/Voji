@@ -33,12 +33,36 @@
 #pragma mark - Lifecycle
 - (void)viewDidLoad {
     [super viewDidLoad];
-
-
     
     // Bypass the MUTE button of the device.
     [[AVAudioSession sharedInstance] setCategory: AVAudioSessionCategoryPlayback error:nil];
+
     
+    [self setupPlayer];
+    [self setupMotionManager];
+    
+    
+    [self loadAndPlayVideo:@"GB1101400818"];
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+- (BOOL)prefersStatusBarHidden
+{
+    return YES;
+}
+
+- (NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
+
+#pragma mark - Setup
+- (void)setupPlayer {
     
     CGFloat height = CGRectGetHeight(self.view.frame);
     CGFloat width = height*16./9;
@@ -57,21 +81,9 @@
     playButton.layer.cornerRadius = buttonImg.size.width;
     playButton.center = CGPointMake(self.view.frame.size.width/2, self.view.frame.size.height/2);
     playButton.tintColor = [UIColor grayColor];
-    
-    
-    
-    [self setupMotionManager];
-   
-    
-    [self loadAndPlayVideo:@"GB1101400818"];
+
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-#pragma mark - Setup
 - (void)setupMotionManager {
     
     self.motionManager = [CMMotionManager new];
@@ -163,15 +175,6 @@
     }
 }
 
-- (BOOL)prefersStatusBarHidden
-{
-    return YES;
-}
-
-- (NSUInteger)supportedInterfaceOrientations
-{
-    return UIInterfaceOrientationMaskPortrait;
-}
 
 #pragma mark - User Actions
 - (void)onDoubleTapped:(UITapGestureRecognizer *)recognizer
