@@ -18,11 +18,8 @@
  * @name Voji
  *  ---------------------------------------------------------------------------------------
  */
-- (void)createVoji:(VMVojiType)type
-              time:(NSNumber*)time
-              user:(PFUser*)user
-              isrc:(NSString*)isrc
-        completion:(void(^)(BOOL success, VMError *error))completion;
+- (void)saveVoji:(VMVoji*)voji
+      completion:(void(^)(BOOL success, VMError *error))completion;
 
 
 - (void)getVojis:(NSString*)isrc

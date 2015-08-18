@@ -109,18 +109,22 @@
     
     
     self.voji1 = [UIButton buttonWithType:UIButtonTypeSystem];
+    self.voji1.tag = 0;
     [self.voji1 setTitle:@"Voji - 1" forState:UIControlStateNormal];
     [self.voji1 setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     self.voji1.frame = CGRectMake(0, 0, self.view.frame.size.width/2, 100);
     self.voji1.backgroundColor = [UIColor colorWithWhite:1.0f alpha:0.5f];
+    [self.voji1 addTarget:self action:@selector(didTapVoji:) forControlEvents:UIControlEventTouchUpInside];
     [vojiBar addSubview:self.voji1];
     
     
     self.voji2 = [UIButton buttonWithType:UIButtonTypeSystem];
+    self.voji2.tag = 1;
     [self.voji2 setTitle:@"Voji - 2" forState:UIControlStateNormal];
     [self.voji2 setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     self.voji2.frame = CGRectMake(self.view.frame.size.width/2, 0, self.view.frame.size.width/2, 100);
     self.voji2.backgroundColor = [UIColor colorWithWhite:1.0f alpha:0.5f];
+    [self.voji1 addTarget:self action:@selector(didTapVoji:) forControlEvents:UIControlEventTouchUpInside];
     [vojiBar addSubview:self.voji2];
     
 }
@@ -241,15 +245,7 @@
 }
 
 
-#pragma mark - User Actions
-- (void)onDoubleTapped:(UITapGestureRecognizer *)recognizer
-{
-    if (recognizer.state == UIGestureRecognizerStateRecognized) {
-        // Play next video
-        if (self.player)
-            [self.player playNextVideo];
-    }
-}
+
 
 
 #pragma mark - Data
@@ -424,7 +420,41 @@
     NSLog(@"center: %f", xCenterNew);
 }
 
+#pragma mark - User Actions
+- (void)onDoubleTapped:(UITapGestureRecognizer *)recognizer
+{
+    if (recognizer.state == UIGestureRecognizerStateRecognized) {
+        // Play next video
+        if (self.player)
+            [self.player playNextVideo];
+    }
+}
 
+- (void)didTapVoji:(id)sender {
+    
+    // Get data
+    UIButton* vojiButton = (UIButton*)sender;
+    VMVojiType vojiType = (VMVojiType)vojiButton.tag;
+    NSTimeInterval time = self.player.currentTime;
+    
+    
+    // Create VMVoji
+    VMVoji* voji = [VMVoji vojiWithType:vojiType time:@(time) user:nil isrc:self.video.isrc];
+    
+    
+    // Update view
+    
+    
+    // Persist Voji
+    [[VMApiFacade sharedInstance] saveVoji:voji completion:^(BOOL success, VMError *error) {
+       
+        // REVERT?
+        if (!success) {
+            
+        }
+    }];
+    
+}
 
 #pragma mark - Delegate - VMMoviePlayerController
 

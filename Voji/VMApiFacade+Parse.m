@@ -8,32 +8,17 @@
 
 #import "VMApiFacade+Parse.h"
 
-#pragma mark - Keys - Voji
-NSString * const kParseKeyVojiType = @"type";
-NSString * const kParseKeyVojiTime = @"time";
-NSString * const kParseKeyVojiUser = @"user";
-NSString * const kParseKeyVojiISRC = @"isrc";
+
 
 
 @implementation VMApiFacade (Parse)
 
 #pragma mark - API vParse --- Voji - (Public) ---
-- (void)createVoji:(VMVojiType)type
-              time:(NSNumber*)time
-              user:(PFUser*)user
-              isrc:(NSString*)isrc
+- (void)saveVoji:(VMVoji*)voji
         completion:(void(^)(BOOL success, VMError *error))completion {
     
-    // Get class name
-    NSString* parseClassName = [VMVoji parseClassName];
     
     // Create a voji
-    PFObject* voji = [PFObject objectWithClassName:parseClassName];
-    [voji setObject:user forKey:kParseKeyVojiUser];
-    [voji setObject:time forKey:kParseKeyVojiTime];
-    [voji setObject:@(type) forKey:kParseKeyVojiType];
-    [voji setObject:isrc forKey:kParseKeyVojiISRC];
-    
     [voji saveEventually];
     
     // Callback
