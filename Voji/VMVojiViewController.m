@@ -14,7 +14,7 @@
 #import <VevoSDK_Internal/VMMoviePlayerController_Private.h>
 
 #define MOVEPLAYER_RADIUS               0.5f         // Higher value is a larger radius (1.0 was the original value) -- 1.0 is 360 degrees, 0.5 is 180 degrees total rotation
-#define MOVEPLAYER_ACCELERATION         1.6f         // Higher value is more acceleration (1.0 is no acceleration)
+#define MOVEPLAYER_ACCELERATION         1.2f         // Higher value is more acceleration (1.0 is no acceleration)
 #define MOVEPLAYER_PERCENT_OF_VIDEO     1.0f         // How much width of the video to show (1.0 is entire video) -- eg, 0.8 only shows 80% of the video total
 
 #define VOJI_HEIGHT                 80.0f
@@ -46,7 +46,8 @@
 @property (nonatomic, strong) id                    playerTimeChangeObserver;
 
 
-
+// Motion
+@property (nonatomic) CGFloat           motionLastRoll;
 
 @end
 
@@ -171,17 +172,32 @@
     if (canUseDeviceMotion){
         [self.motionManager startDeviceMotionUpdatesToQueue:[NSOperationQueue new]
                                                 withHandler:^(CMDeviceMotion *motion, NSError *error) {
-                                                    //NSLog(@"New Device Motion data: %@", motion);
-                                                    
-                                                    //NSLog(@"x: %f, y: %f, z: %f", motion.userAcceleration.x, motion.userAcceleration.y, motion.userAcceleration.z);
-                                                    
                                                     dispatch_async(dispatch_get_main_queue(), ^{
                                                         
                                                         
+                                                        CMQuaternion quat = self.motionManager.deviceMotion.attitude.quaternion;
                                                         
-                                                        [self moveAround:motion.attitude.roll ];
+                                                        double roll = asin(2*(quat.z*quat.x - quat.w*quat.y));
+
+                                                        if (self.motionLastRoll == 0) {
+                                                            self.motionLastRoll = roll;
+                                                        }
                                                         
-                                                        //NSLog(@"x: %f", motion.magneticField.field.x);
+                                                        // kalman filtering
+                                                        static float q = 0.1;   // process noise
+                                                        static float r = 0.1;   // sensor noise
+                                                        static float p = 0.1;   // estimated error
+                                                        static float k = 0.5;   // kalman filter gain
+                                                        
+                                                        float x = self.motionLastRoll;
+                                                        p = p + q;
+                                                        k = p / (p + r);
+                                                        x = x + k*(roll - x);
+                                                        p = (1 - k)*p;
+                                                        self.motionLastRoll = x;
+                                                        
+                                                        [self moveAround:self.motionLastRoll];
+                                                        
                                                     });
                                                     
                                                     
@@ -463,6 +479,8 @@
     
 //    NSLog(@"center: %f", xCenterNew);
 }
+
+
 
 #pragma mark - User Actions
 - (void)onDoubleTapped:(UITapGestureRecognizer *)recognizer
