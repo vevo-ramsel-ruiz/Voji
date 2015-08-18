@@ -13,8 +13,9 @@
 #import <VevoSDK_Internal/VMApiFacade.h>
 #import <VevoSDK_Internal/VMMoviePlayerController_Private.h>
 
-#define MOVEPLAYER_RADIUS           0.4f         // Higher value is a larger radius (1.0 was the original value) -- 1.0 is 360 degrees, 0.5 is 180 degrees total rotation
-#define MOVEPLAYER_ACCELERATION     2.0f         // Higher value is more acceleration (1.0 is no acceleration)
+#define MOVEPLAYER_RADIUS               0.4f         // Higher value is a larger radius (1.0 was the original value) -- 1.0 is 360 degrees, 0.5 is 180 degrees total rotation
+#define MOVEPLAYER_ACCELERATION         2.0f         // Higher value is more acceleration (1.0 is no acceleration)
+#define MOVEPLAYER_PERCENT_OF_VIDEO     1.0f         // How much width of the video to show (1.0 is entire video) -- eg, 0.8 only shows 80% of the video total
 
 #define VOJI_HEIGHT                 80.0f
 #define VOJI_BG_ALPHA               0.0f
@@ -441,8 +442,8 @@
    
     
     CGFloat xCenterRef = self.view.frame.size.width/2;
-    CGFloat xCenterMax = self.playerBaseView.frame.size.width/2;
-    CGFloat xCenterMin = self.view.frame.size.width - self.playerBaseView.frame.size.width/2;
+    CGFloat xCenterMax = self.playerBaseView.frame.size.width/2 * MOVEPLAYER_PERCENT_OF_VIDEO;
+    CGFloat xCenterMin = self.view.frame.size.width - self.playerBaseView.frame.size.width/2 * MOVEPLAYER_PERCENT_OF_VIDEO;
     
     NSLog(@"x/M_PI: %f", x/M_PI);
     NSLog(@"--- pow(x/M_PI, MOVEPLAYER_ACCELERATION): %f", pow(x/M_PI, MOVEPLAYER_ACCELERATION));
