@@ -27,6 +27,15 @@
 @property (nonatomic) CMMotionManager   *motionManager;
 @property (nonatomic) VMMoviePlayerController       *player;
 
+// Voji Stuff (temp)
+@property (nonatomic) UIButton            *voji1;
+@property (nonatomic) UIButton            *voji2;
+@property (nonatomic) UILabel            *vojiDisplay1;
+@property (nonatomic) UILabel            *vojiDisplay2;
+@property (nonatomic) int               vojiCount1;
+@property (nonatomic) int               vojiCount2;
+
+
 // Timer and observers
 @property (nonatomic, strong) id                    playerTimeChangeObserver;
 
@@ -44,6 +53,9 @@
 
     
     [self setupPlayer];
+    [self setupVojis];
+    [self setupVojiDisplays];
+
     [self setupMotionManager];
     
     
@@ -87,6 +99,54 @@
     playButton.center = CGPointMake(self.view.frame.size.width/2, self.view.frame.size.height/2);
     playButton.tintColor = [UIColor grayColor];
 
+}
+
+- (void)setupVojis {
+    
+    UIView* vojiBar = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - 100, self.view.frame.size.width, 100)];
+    [self.view addSubview:vojiBar];
+    [self.view bringSubviewToFront:vojiBar];
+    
+    
+    self.voji1 = [UIButton buttonWithType:UIButtonTypeSystem];
+    [self.voji1 setTitle:@"Voji - 1" forState:UIControlStateNormal];
+    [self.voji1 setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    self.voji1.frame = CGRectMake(0, 0, self.view.frame.size.width/2, 100);
+    self.voji1.backgroundColor = [UIColor colorWithWhite:1.0f alpha:0.5f];
+    [vojiBar addSubview:self.voji1];
+    
+    
+    self.voji2 = [UIButton buttonWithType:UIButtonTypeSystem];
+    [self.voji2 setTitle:@"Voji - 2" forState:UIControlStateNormal];
+    [self.voji2 setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    self.voji2.frame = CGRectMake(self.view.frame.size.width/2, 0, self.view.frame.size.width/2, 100);
+    self.voji2.backgroundColor = [UIColor colorWithWhite:1.0f alpha:0.5f];
+    [vojiBar addSubview:self.voji2];
+    
+}
+
+- (void)setupVojiDisplays {
+
+    UIView* vojiDisplayBar = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 100)];
+    [self.view addSubview:vojiDisplayBar];
+    [self.view bringSubviewToFront:vojiDisplayBar];
+    
+    
+    self.vojiDisplay1 = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width/2, 100)];
+    self.vojiDisplay1.textAlignment = NSTextAlignmentCenter;
+    self.vojiDisplay1.text = @"0";
+    self.vojiDisplay1.textColor = [UIColor whiteColor];
+    self.vojiDisplay1.backgroundColor = [UIColor colorWithWhite:1.0f alpha:0.5f];
+    [vojiDisplayBar addSubview:self.vojiDisplay1];
+    
+    
+    self.vojiDisplay2 = [[UILabel alloc] initWithFrame:CGRectMake(self.view.frame.size.width/2, 0, self.view.frame.size.width/2, 100)];
+    self.vojiDisplay2.textAlignment = NSTextAlignmentCenter;
+    self.vojiDisplay2.text = @"0";
+    self.vojiDisplay2.textColor = [UIColor whiteColor];
+    self.vojiDisplay2.backgroundColor = [UIColor colorWithWhite:1.0f alpha:0.5f];
+    [vojiDisplayBar addSubview:self.vojiDisplay2];
+    
 }
 
 - (void)setupMotionManager {
@@ -276,7 +336,7 @@
         
         
         // Add type to array at key
-        [types addObject:voji.type];
+        [types addObject:voji];
         
         //  Reset in data
         [data setObject:types forKey:voji.time];
@@ -297,6 +357,20 @@
     if ([self.vojisDict objectForKey:currentTime]) {
         
         NSArray* vojisAtTime = [self.vojisDict objectForKey:currentTime];
+        
+        //// TEMP - RENDER VIEW
+        [vojisAtTime enumerateObjectsUsingBlock:^(VMVoji* voji, NSUInteger idx, BOOL *stop) {
+            
+            if ([voji.type intValue] == 0) {
+                self.vojiCount1++;
+                self.vojiDisplay1.text = [@(self.vojiCount1) stringValue];
+            }
+            else {
+                self.vojiCount2++;
+                self.vojiDisplay2.text = [@(self.vojiCount2) stringValue];
+            }
+        }];
+      
         
         NSLog(@"currentTime OBJECT = %@",currentTime);
         NSLog(@"vojisAtTime = %@",vojisAtTime);
@@ -380,6 +454,7 @@
 {
     self.playerBaseView.alpha = 0;
     [self.view addSubview:self.playerBaseView];
+    [self.view sendSubviewToBack:self.playerBaseView];
     [UIView animateWithDuration:2. animations:^{
         self.playerBaseView.alpha = 1;
         self.thumbnailView.transform = CGAffineTransformScale(CGAffineTransformIdentity, 3., 3.);
