@@ -6,20 +6,20 @@
 //  Copyright (c) 2015 Vevo. All rights reserved.
 //
 
-#import "ViewController.h"
+#import "VMVojiViewController.h"
 #import "UIImageView+WebCache.h"
 #import <CoreMotion/CoreMotion.h>
 #import <VevoSDK_Internal/VMMoviePlayerController.h>
 #import <VevoSDK_Internal/VMApiFacade.h>
 #import <VevoSDK_Internal/VMMoviePlayerController_Private.h>
 
-#define MOVEPLAYER_RADIUS           0.5f         // Higher value is a larger radius (1.0 was the original value) -- 1.0 is 360 degrees, 0.5 is 180 degrees total rotation
-#define MOVEPLAYER_ACCELERATION     3.0f         // Higher value is more acceleration (1.0 is no acceleration)
+#define MOVEPLAYER_RADIUS           0.4f         // Higher value is a larger radius (1.0 was the original value) -- 1.0 is 360 degrees, 0.5 is 180 degrees total rotation
+#define MOVEPLAYER_ACCELERATION     2.0f         // Higher value is more acceleration (1.0 is no acceleration)
 
-#define VOJI_HEIGHT                 70.0f
-#define VOJI_BG_ALPHA               0.3f
+#define VOJI_HEIGHT                 80.0f
+#define VOJI_BG_ALPHA               0.0f
 
-@interface ViewController () <VMMoviePlayerControllerDelegate>
+@interface VMVojiViewController () <VMMoviePlayerControllerDelegate>
 
 // Data
 @property (nonatomic) VMVideo           *video;
@@ -45,9 +45,11 @@
 @property (nonatomic, strong) id                    playerTimeChangeObserver;
 
 
+
+
 @end
 
-@implementation ViewController
+@implementation VMVojiViewController
 
 #pragma mark - Lifecycle
 - (void)viewDidLoad {
@@ -408,7 +410,7 @@
     
     // Observe current time
     double interval = 1.0f;
-    __weak ViewController *weakSelf = self;
+    __weak VMVojiViewController *weakSelf = self;
     /* Update the scrubber during normal playback. */
     self.playerTimeChangeObserver = [self.player registerPlayerTimeObserverWithInterval:interval callbackBlock:^(CMTime time)
                                      {

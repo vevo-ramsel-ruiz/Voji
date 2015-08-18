@@ -11,7 +11,7 @@
 		7EDACC071B828652003090E7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EDACC061B828652003090E7 /* main.m */; };
 		7EDACC0A1B828652003090E7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EDACC091B828652003090E7 /* AppDelegate.m */; };
 		7EDACC0D1B828652003090E7 /* Voji.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7EDACC0B1B828652003090E7 /* Voji.xcdatamodeld */; };
-		7EDACC101B828652003090E7 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EDACC0F1B828652003090E7 /* ViewController.m */; };
+		7EDACC101B828652003090E7 /* VMVojiViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EDACC0F1B828652003090E7 /* VMVojiViewController.m */; };
 		7EDACC131B828652003090E7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7EDACC111B828652003090E7 /* Main.storyboard */; };
 		7EDACC151B828652003090E7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7EDACC141B828652003090E7 /* Images.xcassets */; };
 		7EDACC181B828652003090E7 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EDACC161B828652003090E7 /* LaunchScreen.xib */; };
@@ -52,8 +52,8 @@
 		7EDACC081B828652003090E7 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		7EDACC091B828652003090E7 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		7EDACC0C1B828652003090E7 /* Voji.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Voji.xcdatamodel; sourceTree = "<group>"; };
-		7EDACC0E1B828652003090E7 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		7EDACC0F1B828652003090E7 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		7EDACC0E1B828652003090E7 /* VMVojiViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VMVojiViewController.h; sourceTree = "<group>"; };
+		7EDACC0F1B828652003090E7 /* VMVojiViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VMVojiViewController.m; sourceTree = "<group>"; };
 		7EDACC121B828652003090E7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		7EDACC141B828652003090E7 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		7EDACC171B828652003090E7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
@@ -157,8 +157,8 @@
 				7EDACC451B8298A2003090E7 /* Data */,
 				7EDACC081B828652003090E7 /* AppDelegate.h */,
 				7EDACC091B828652003090E7 /* AppDelegate.m */,
-				7EDACC0E1B828652003090E7 /* ViewController.h */,
-				7EDACC0F1B828652003090E7 /* ViewController.m */,
+				7EDACC0E1B828652003090E7 /* VMVojiViewController.h */,
+				7EDACC0F1B828652003090E7 /* VMVojiViewController.m */,
 				7EDACC111B828652003090E7 /* Main.storyboard */,
 				7EDACC141B828652003090E7 /* Images.xcassets */,
 				7EDACC161B828652003090E7 /* LaunchScreen.xib */,
@@ -361,7 +361,7 @@
 				7EDACC0D1B828652003090E7 /* Voji.xcdatamodeld in Sources */,
 				7EDACC491B8298E5003090E7 /* VMApiFacade+Parse.m in Sources */,
 				7EDACC0A1B828652003090E7 /* AppDelegate.m in Sources */,
-				7EDACC101B828652003090E7 /* ViewController.m in Sources */,
+				7EDACC101B828652003090E7 /* VMVojiViewController.m in Sources */,
 				7EDACC071B828652003090E7 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
