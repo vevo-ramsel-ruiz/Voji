@@ -13,8 +13,8 @@
 #import <VevoSDK_Internal/VMApiFacade.h>
 #import <VevoSDK_Internal/VMMoviePlayerController_Private.h>
 
-#define MOVEPLAYER_RADIUS               0.4f         // Higher value is a larger radius (1.0 was the original value) -- 1.0 is 360 degrees, 0.5 is 180 degrees total rotation
-#define MOVEPLAYER_ACCELERATION         2.0f         // Higher value is more acceleration (1.0 is no acceleration)
+#define MOVEPLAYER_RADIUS               0.5f         // Higher value is a larger radius (1.0 was the original value) -- 1.0 is 360 degrees, 0.5 is 180 degrees total rotation
+#define MOVEPLAYER_ACCELERATION         1.6f         // Higher value is more acceleration (1.0 is no acceleration)
 #define MOVEPLAYER_PERCENT_OF_VIDEO     1.0f         // How much width of the video to show (1.0 is entire video) -- eg, 0.8 only shows 80% of the video total
 
 #define VOJI_HEIGHT                 80.0f
@@ -457,7 +457,9 @@
     xCenterNew = fmax(xCenterMin, xCenterNew);
     xCenterNew = fmin(xCenterMax, xCenterNew);
     
-    self.playerBaseView.center = CGPointMake(xCenterNew, self.view.frame.size.height/2);
+    [UIView animateWithDuration:0.1 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+        self.playerBaseView.center = CGPointMake(xCenterNew, self.view.frame.size.height/2);
+    } completion:nil];
     
 //    NSLog(@"center: %f", xCenterNew);
 }
