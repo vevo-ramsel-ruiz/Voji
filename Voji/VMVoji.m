@@ -10,6 +10,11 @@
 #import <Parse/PFObject+Subclass.h>
 
 
+#pragma mark - Keys - Voji
+NSString * const kParseKeyVojiType = @"type";
+NSString * const kParseKeyVojiTime = @"time";
+NSString * const kParseKeyVojiUser = @"user";
+NSString * const kParseKeyVojiISRC = @"isrc";
 
 @implementation VMVoji
 

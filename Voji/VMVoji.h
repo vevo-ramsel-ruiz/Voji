@@ -9,10 +9,10 @@
 #import "PFObject.h"
 
 #pragma mark - Keys - Voji
-NSString * const kParseKeyVojiType = @"type";
-NSString * const kParseKeyVojiTime = @"time";
-NSString * const kParseKeyVojiUser = @"user";
-NSString * const kParseKeyVojiISRC = @"isrc";
+extern NSString * const kParseKeyVojiType;
+extern NSString * const kParseKeyVojiTime;
+extern NSString * const kParseKeyVojiUser;
+extern NSString * const kParseKeyVojiISRC;
 
 
 typedef NS_ENUM(NSInteger, VMVojiType)

@@ -19,7 +19,7 @@
 // Data
 @property (nonatomic) VMVideo           *video;
 @property (nonatomic) NSArray           *vojis;
-@property (nonatomic) NSDictionary      *vojisDict;
+@property (nonatomic) NSMutableDictionary      *vojisDict;
 
 // Views
 @property (nonatomic) UIView            *playerBaseView;
@@ -109,7 +109,7 @@
     
     
     self.voji1 = [UIButton buttonWithType:UIButtonTypeSystem];
-    self.voji1.tag = 0;
+    self.voji1.tag = VMVojiTypeThumbsUp;
     [self.voji1 setTitle:@"Voji - 1" forState:UIControlStateNormal];
     [self.voji1 setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     self.voji1.frame = CGRectMake(0, 0, self.view.frame.size.width/2, 100);
@@ -119,12 +119,12 @@
     
     
     self.voji2 = [UIButton buttonWithType:UIButtonTypeSystem];
-    self.voji2.tag = 1;
+    self.voji2.tag = VMVojiTypeThumbsDown;
     [self.voji2 setTitle:@"Voji - 2" forState:UIControlStateNormal];
     [self.voji2 setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     self.voji2.frame = CGRectMake(self.view.frame.size.width/2, 0, self.view.frame.size.width/2, 100);
     self.voji2.backgroundColor = [UIColor colorWithWhite:1.0f alpha:0.5f];
-    [self.voji1 addTarget:self action:@selector(didTapVoji:) forControlEvents:UIControlEventTouchUpInside];
+    [self.voji2 addTarget:self action:@selector(didTapVoji:) forControlEvents:UIControlEventTouchUpInside];
     [vojiBar addSubview:self.voji2];
     
 }
@@ -245,9 +245,6 @@
 }
 
 
-
-
-
 #pragma mark - Data
 
 - (void)loadAndPlayVideo:(NSString *)isrc
@@ -338,12 +335,31 @@
         [data setObject:types forKey:voji.time];
     }];
     
-    return [data copy];
+    return data;
 }
 
+- (void)addVMVojiToDictionary:(VMVoji*)voji {
+    if (![voji isKindOfClass:[VMVoji class]])
+        return;
+
+    NSNumber* time = voji.time;
+    
+    // Get array of types at key
+    NSMutableArray* types = [self.vojisDict objectForKey:voji.time];
+    
+    // Initialize if none
+    if (![self.vojisDict objectForKey:time])
+        types = [NSMutableArray new];
+    
+    // Add type to array at key
+    [types addObject:voji];
+    
+    //  Reset in data
+    [self.vojisDict setObject:types forKey:voji.time];
+
+}
 
 #pragma mark - Time
-
 - (void)elapsedTimeChanged {
     
     NSNumber* currentTime = @(floor(self.player.currentTime));
@@ -356,20 +372,28 @@
         
         //// TEMP - RENDER VIEW
         [vojisAtTime enumerateObjectsUsingBlock:^(VMVoji* voji, NSUInteger idx, BOOL *stop) {
+            if (![voji isKindOfClass:[VMVoji class]]) return;
             
-            if ([voji.type intValue] == 0) {
-                self.vojiCount1++;
-                self.vojiDisplay1.text = [@(self.vojiCount1) stringValue];
-            }
-            else {
-                self.vojiCount2++;
-                self.vojiDisplay2.text = [@(self.vojiCount2) stringValue];
-            }
+            [self updateViewWithVoji:voji];
         }];
       
         
         NSLog(@"currentTime OBJECT = %@",currentTime);
         NSLog(@"vojisAtTime = %@",vojisAtTime);
+    }
+
+}
+
+- (void)updateViewWithVoji:(VMVoji*)voji {
+    
+    
+    if ([voji.type intValue] == 0) {
+        self.vojiCount1++;
+        self.vojiDisplay1.text = [@(self.vojiCount1) stringValue];
+    }
+    else {
+        self.vojiCount2++;
+        self.vojiDisplay2.text = [@(self.vojiCount2) stringValue];
     }
 
 }
@@ -435,15 +459,18 @@
     // Get data
     UIButton* vojiButton = (UIButton*)sender;
     VMVojiType vojiType = (VMVojiType)vojiButton.tag;
-    NSTimeInterval time = self.player.currentTime;
+    NSTimeInterval time = floor(self.player.currentTime);
     
     
     // Create VMVoji
-    VMVoji* voji = [VMVoji vojiWithType:vojiType time:@(time) user:nil isrc:self.video.isrc];
+#warning Pass [PFUser currentUser]
+    VMVoji* voji = [VMVoji vojiWithType:vojiType time:@(time) user:[NSNull null] isrc:self.video.isrc];
+    [self addVMVojiToDictionary:voji];
     
     
     // Update view
-    
+    [self updateViewWithVoji:voji];
+
     
     // Persist Voji
     [[VMApiFacade sharedInstance] saveVoji:voji completion:^(BOOL success, VMError *error) {
