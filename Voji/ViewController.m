@@ -13,6 +13,8 @@
 #import <VevoSDK_Internal/VMApiFacade.h>
 #import <VevoSDK_Internal/VMMoviePlayerController_Private.h>
 
+#define MOVEPLAYER_RADIUS           0.6f         // Higher value is a larger radius (1.0 was the original value)
+#define MOVEPLAYER_ACCELERATION     1.0f         // Higher value is more acceleration (1.0 is no acceleration)
 
 @interface ViewController () <VMMoviePlayerControllerDelegate>
 
@@ -84,7 +86,7 @@
     CGFloat height = CGRectGetHeight(self.view.frame);
     CGFloat width = height*16./9;
     CGFloat x = CGRectGetWidth(self.view.frame)/2 - width/2;
-    NSString *imageUrl = @"http://img.cache.vevo.com/Content/VevoImages/video/851E27D7CB54BED811E0D7F52365E7D9201536115833385.jpg";
+    NSString *imageUrl = @"http://img.cache.vevo.com/Content/VevoImages/video/278C325142167204907A6E6F32C465C3201586134455617.jpg";
     self.thumbnailView = [[UIImageView alloc] initWithFrame:CGRectMake(x, 0, width, height)];
     [self.thumbnailView sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:nil];
     [self.view addSubview:self.thumbnailView];
@@ -430,18 +432,28 @@
     if (self.playerBaseView == nil)
         return;
     
+//    NSLog(@"x: %f", x);
+   
     
     CGFloat xCenterRef = self.view.frame.size.width/2;
-    CGFloat xCenterMax = self.playerBaseView.frame.size.width/2;
-    CGFloat xCenterMin = self.view.frame.size.width - self.playerBaseView.frame.size.width/2;
+    CGFloat xCenterMax = self.playerBaseView.frame.size.width/2 * MOVEPLAYER_RADIUS;
+    CGFloat xCenterMin = self.view.frame.size.width - self.playerBaseView.frame.size.width/2 * MOVEPLAYER_RADIUS;
     
-    CGFloat xCenterNew = xCenterRef + x/M_PI * xCenterMax;
+//    NSLog(@"x/M_PI: %f", x/M_PI);
+//    NSLog(@"--- pow(x/M_PI, MOVEPLAYER_ACCELERATION): %f", pow(x/M_PI, MOVEPLAYER_ACCELERATION));
+
+    CGFloat xAccel = fabs(pow(x/M_PI_2, MOVEPLAYER_ACCELERATION));
+    CGFloat xAccelAdjusted = x > 0 ? xAccel : -xAccel;
+    
+//    NSLog(@"----    xAccelAdjusted: %f", xAccelAdjusted);
+
+    CGFloat xCenterNew = xCenterRef + xAccelAdjusted * xCenterMax;
     xCenterNew = fmax(xCenterMin, xCenterNew);
     xCenterNew = fmin(xCenterMax, xCenterNew);
     
     self.playerBaseView.center = CGPointMake(xCenterNew, self.view.frame.size.height/2);
     
-    NSLog(@"center: %f", xCenterNew);
+//    NSLog(@"center: %f", xCenterNew);
 }
 
 #pragma mark - User Actions
