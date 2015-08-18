@@ -26,6 +26,10 @@
 @property (nonatomic) CMMotionManager   *motionManager;
 @property (nonatomic) VMMoviePlayerController       *player;
 
+// Timer and observers
+@property (nonatomic, strong) id                    playerTimeChangeObserver;
+
+
 @end
 
 @implementation ViewController
@@ -217,8 +221,6 @@
         }
     }];
     
-    
-    
     dispatch_group_notify(dispatchGroup, dispatch_get_main_queue(), ^{
         
         self.playerBaseView = [[UIView alloc] initWithFrame:self.thumbnailView.frame];
@@ -236,6 +238,9 @@
         self.player.hideDefaultVevoLogo = YES;
         self.player.enableContinuousPlay = YES;
         [self.player playVideo:self.video];
+  
+    
+
     });
 
     
@@ -243,6 +248,37 @@
   
 }
 
+#pragma mark - Time
+
+- (void)elapsedTimeChanged {
+    
+    //self.player.currentTime
+}
+
+
+- (void)registerPlayerTimeObserver {
+    
+    // Observe current time
+    double interval = 1.0f;
+    __weak ViewController *weakSelf = self;
+    /* Update the scrubber during normal playback. */
+    self.playerTimeChangeObserver = [self.player registerPlayerTimeObserverWithInterval:interval callbackBlock:^(CMTime time)
+                                     {
+                                         [weakSelf elapsedTimeChanged];
+                                     }];
+
+}
+
+- (void)unregisterPlayerTimeObserver {
+    if (self.playerTimeChangeObserver) {
+        
+        [self.player unregisterPlayerTimeObserver:self.playerTimeChangeObserver];
+        
+        // Nil out the time observer after unregistering.
+        self.playerTimeChangeObserver = nil;
+    }
+
+}
 
 
 #pragma mark - Motion
@@ -267,7 +303,7 @@
 
 
 
-#pragma mark - VMMoviePlayerController Delegate
+#pragma mark - Delegate - VMMoviePlayerController
 
 /**
  Called right before the movie player is about start playing a video.
@@ -277,6 +313,12 @@
     
     if (self.playerBaseView.superview == nil)
         [self showPlayerView];
+    
+    
+#warning Make sure unregistering properly
+    // observe
+    [self registerPlayerTimeObserver];
+
 }
 
 - (void)moviePlayerDidStartPlayingPreroll:(VMMoviePlayerController *)player {
@@ -297,5 +339,7 @@
         
     }];
 }
+
+
 
 @end
