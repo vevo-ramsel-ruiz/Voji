@@ -13,8 +13,11 @@
 #import <VevoSDK_Internal/VMApiFacade.h>
 #import <VevoSDK_Internal/VMMoviePlayerController_Private.h>
 
-#define MOVEPLAYER_RADIUS           0.6f         // Higher value is a larger radius (1.0 was the original value)
-#define MOVEPLAYER_ACCELERATION     1.0f         // Higher value is more acceleration (1.0 is no acceleration)
+#define MOVEPLAYER_RADIUS           0.5f         // Higher value is a larger radius (1.0 was the original value) -- 1.0 is 360 degrees, 0.5 is 180 degrees total rotation
+#define MOVEPLAYER_ACCELERATION     3.0f         // Higher value is more acceleration (1.0 is no acceleration)
+
+#define VOJI_HEIGHT                 70.0f
+#define VOJI_BG_ALPHA               0.3f
 
 @interface ViewController () <VMMoviePlayerControllerDelegate>
 
@@ -105,7 +108,7 @@
 
 - (void)setupVojis {
     
-    UIView* vojiBar = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - 100, self.view.frame.size.width, 100)];
+    UIView* vojiBar = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - VOJI_HEIGHT, self.view.frame.size.width, VOJI_HEIGHT)];
     [self.view addSubview:vojiBar];
     [self.view bringSubviewToFront:vojiBar];
     
@@ -114,8 +117,8 @@
     self.voji1.tag = VMVojiTypeThumbsUp;
     [self.voji1 setTitle:@"Voji - 1" forState:UIControlStateNormal];
     [self.voji1 setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    self.voji1.frame = CGRectMake(0, 0, self.view.frame.size.width/2, 100);
-    self.voji1.backgroundColor = [UIColor colorWithWhite:1.0f alpha:0.5f];
+    self.voji1.frame = CGRectMake(0, 0, self.view.frame.size.width/2, VOJI_HEIGHT);
+    self.voji1.backgroundColor = [UIColor colorWithWhite:1.0f alpha:VOJI_BG_ALPHA];
     [self.voji1 addTarget:self action:@selector(didTapVoji:) forControlEvents:UIControlEventTouchUpInside];
     [vojiBar addSubview:self.voji1];
     
@@ -124,8 +127,8 @@
     self.voji2.tag = VMVojiTypeThumbsDown;
     [self.voji2 setTitle:@"Voji - 2" forState:UIControlStateNormal];
     [self.voji2 setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    self.voji2.frame = CGRectMake(self.view.frame.size.width/2, 0, self.view.frame.size.width/2, 100);
-    self.voji2.backgroundColor = [UIColor colorWithWhite:1.0f alpha:0.5f];
+    self.voji2.frame = CGRectMake(self.view.frame.size.width/2, 0, self.view.frame.size.width/2, VOJI_HEIGHT);
+    self.voji2.backgroundColor = [UIColor colorWithWhite:1.0f alpha:VOJI_BG_ALPHA];
     [self.voji2 addTarget:self action:@selector(didTapVoji:) forControlEvents:UIControlEventTouchUpInside];
     [vojiBar addSubview:self.voji2];
     
@@ -133,24 +136,24 @@
 
 - (void)setupVojiDisplays {
 
-    UIView* vojiDisplayBar = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 100)];
+    UIView* vojiDisplayBar = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, VOJI_HEIGHT)];
     [self.view addSubview:vojiDisplayBar];
     [self.view bringSubviewToFront:vojiDisplayBar];
     
     
-    self.vojiDisplay1 = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width/2, 100)];
+    self.vojiDisplay1 = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width/2, VOJI_HEIGHT)];
     self.vojiDisplay1.textAlignment = NSTextAlignmentCenter;
     self.vojiDisplay1.text = @"0";
     self.vojiDisplay1.textColor = [UIColor whiteColor];
-    self.vojiDisplay1.backgroundColor = [UIColor colorWithWhite:1.0f alpha:0.5f];
+    self.vojiDisplay1.backgroundColor = [UIColor colorWithWhite:1.0f alpha:VOJI_BG_ALPHA];
     [vojiDisplayBar addSubview:self.vojiDisplay1];
     
     
-    self.vojiDisplay2 = [[UILabel alloc] initWithFrame:CGRectMake(self.view.frame.size.width/2, 0, self.view.frame.size.width/2, 100)];
+    self.vojiDisplay2 = [[UILabel alloc] initWithFrame:CGRectMake(self.view.frame.size.width/2, 0, self.view.frame.size.width/2, VOJI_HEIGHT)];
     self.vojiDisplay2.textAlignment = NSTextAlignmentCenter;
     self.vojiDisplay2.text = @"0";
     self.vojiDisplay2.textColor = [UIColor whiteColor];
-    self.vojiDisplay2.backgroundColor = [UIColor colorWithWhite:1.0f alpha:0.5f];
+    self.vojiDisplay2.backgroundColor = [UIColor colorWithWhite:1.0f alpha:VOJI_BG_ALPHA];
     [vojiDisplayBar addSubview:self.vojiDisplay2];
     
 }
@@ -432,22 +435,22 @@
     if (self.playerBaseView == nil)
         return;
     
-//    NSLog(@"x: %f", x);
+    NSLog(@"x: %f", x);
    
     
     CGFloat xCenterRef = self.view.frame.size.width/2;
-    CGFloat xCenterMax = self.playerBaseView.frame.size.width/2 * MOVEPLAYER_RADIUS;
-    CGFloat xCenterMin = self.view.frame.size.width - self.playerBaseView.frame.size.width/2 * MOVEPLAYER_RADIUS;
+    CGFloat xCenterMax = self.playerBaseView.frame.size.width/2;
+    CGFloat xCenterMin = self.view.frame.size.width - self.playerBaseView.frame.size.width/2;
     
-//    NSLog(@"x/M_PI: %f", x/M_PI);
-//    NSLog(@"--- pow(x/M_PI, MOVEPLAYER_ACCELERATION): %f", pow(x/M_PI, MOVEPLAYER_ACCELERATION));
+    NSLog(@"x/M_PI: %f", x/M_PI);
+    NSLog(@"--- pow(x/M_PI, MOVEPLAYER_ACCELERATION): %f", pow(x/M_PI, MOVEPLAYER_ACCELERATION));
 
-    CGFloat xAccel = fabs(pow(x/M_PI_2, MOVEPLAYER_ACCELERATION));
+    CGFloat xAccel = pow(fabs(x/M_PI_2), MOVEPLAYER_ACCELERATION);
     CGFloat xAccelAdjusted = x > 0 ? xAccel : -xAccel;
     
-//    NSLog(@"----    xAccelAdjusted: %f", xAccelAdjusted);
+    NSLog(@"----    xAccelAdjusted: %f", xAccelAdjusted);
 
-    CGFloat xCenterNew = xCenterRef + xAccelAdjusted * xCenterMax;
+    CGFloat xCenterNew = xCenterRef + xAccelAdjusted * xCenterMax * 1/MOVEPLAYER_RADIUS;
     xCenterNew = fmax(xCenterMin, xCenterNew);
     xCenterNew = fmin(xCenterMax, xCenterNew);
     
