@@ -19,6 +19,7 @@
 // Data
 @property (nonatomic) VMVideo           *video;
 @property (nonatomic) NSArray           *vojis;
+@property (nonatomic) NSDictionary      *vojisDict;
 
 // Views
 @property (nonatomic) UIView            *playerBaseView;
@@ -198,6 +199,7 @@
     
     dispatch_group_t dispatchGroup = dispatch_group_create();
     
+    // -- Get video
     dispatch_group_enter(dispatchGroup);
     [[VMApiFacade sharedInstance] getVideoWithIsrc:isrc completion:^(BOOL success, VMVideo *video, VMError *error){
         if (success) {
@@ -209,18 +211,21 @@
         }
     }];
     
-    
+    // -- Get vojs
     dispatch_group_enter(dispatchGroup);
     [[VMApiFacade sharedInstance] getVojis:isrc completion:^(BOOL success, NSArray *vojis, VMError *error) {
         
         if (success) {
             
             self.vojis = vojis;
+            self.vojisDict = [self VMVojisToDictionary:vojis];
             
             dispatch_group_leave(dispatchGroup);
         }
     }];
     
+    
+    // -- Display
     dispatch_group_notify(dispatchGroup, dispatch_get_main_queue(), ^{
         
         self.playerBaseView = [[UIView alloc] initWithFrame:self.thumbnailView.frame];
@@ -239,7 +244,6 @@
         self.player.enableContinuousPlay = YES;
         [self.player playVideo:self.video];
   
-    
 
     });
 
@@ -248,11 +252,56 @@
   
 }
 
+//// OPTIONS
+
+// 1 - Dict with Keys as time and objects as Array of Voji types
+// 2 - Array initialized with capacity of seconds of video, objects are nested arrays of voji types
+
+
+#pragma mark Data - Utilities
+- (NSDictionary*)VMVojisToDictionary:(NSArray*)vojis {
+    
+    NSMutableDictionary* data = [NSMutableDictionary new];
+    
+    [vojis enumerateObjectsUsingBlock:^(VMVoji* voji, NSUInteger idx, BOOL *stop) {
+        if (![voji isKindOfClass:[VMVoji class]])
+            return;
+    
+        // Get array of types at key
+        NSMutableArray* types = [data objectForKey:voji.time];
+        
+        // Initialize if none
+        if (![data objectForKey:voji.time])
+            types = [NSMutableArray new];
+        
+        
+        // Add type to array at key
+        [types addObject:voji.type];
+        
+        //  Reset in data
+        [data setObject:types forKey:voji.time];
+    }];
+    
+    return [data copy];
+}
+
+
 #pragma mark - Time
 
 - (void)elapsedTimeChanged {
     
-    //self.player.currentTime
+    NSNumber* currentTime = @(floor(self.player.currentTime));
+    
+    NSLog(@"*** currentTime --- %@",currentTime);
+    
+    if ([self.vojisDict objectForKey:currentTime]) {
+        
+        NSArray* vojisAtTime = [self.vojisDict objectForKey:currentTime];
+        
+        NSLog(@"currentTime OBJECT = %@",currentTime);
+        NSLog(@"vojisAtTime = %@",vojisAtTime);
+    }
+
 }
 
 
